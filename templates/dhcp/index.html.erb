@@ -1,16 +1,36 @@
 <h2>DHCP</h2>
 
+<form method="post" action="/dhcp">
+  <label>
+    Host:
+    <input name="host"></input>
+  </label>
+  <label>
+    MAC:
+    <input name="mac"></input>
+  </label>
+  <label>
+    IP:
+    <input name="ip"></input>
+  </label>
+  <label>
+    <input type="submit"></input>
+  </label>
+</form>
+
 <table class="table table-condensed table-bordered table-striped">
   <tr>
     <th>Host</th>
     <th>MAC</th>
     <th>IP</th>
+    <th></th>
   </tr>
 <% read_dhcp_reservations.each do |reservation| %>
   <tr>
     <td><%= reservation[:host] %></td>
     <td><%= reservation[:mac] %></td>
     <td><%= reservation[:ip] %></td>
+    <td><a data-method="delete" href="/dhcp/<%= reservation[:host] %>">Delete</a></td>
   </tr>
 <% end %>
 </table>

@@ -26,6 +26,26 @@ get '/dns' do
   #"#{header}<pre>#{File.read("/etc/bind/named.conf")}</pre>"
 end
 
+post '/dhcp' do
+  data = read_dhcp_reservations
+  data << {
+    :host => params[:host],
+    :mac => params[:mac],
+    :ip => params[:ip],
+  }
+  write_dhcp_reservations(data)
+  redirect '/dhcp'
+end
+
+delete '/dhcp/:host' do
+  data = read_dhcp_reservations
+  data.delete_if do |item|
+    item[:host] == params[:host]
+  end
+  write_dhcp_reservations(data)
+  redirect '/dhcp'
+end
+
 get '/dhcp' do
   erb :'dhcp/index.html', :layout => :'layout/application.html'
   #  "#{header}<pre>#{File.read("/etc/dhcp/dhcpd.conf")}</pre>"
