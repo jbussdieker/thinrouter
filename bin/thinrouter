@@ -3,6 +3,7 @@ require 'sinatra'
 require 'yaml'
 
 set :views, settings.root + '/../templates'
+set :public_folder, settings.root + '/../public'
 
 def read_dhcp_reservations(file = "dhcp.yaml")
   YAML.load(File.read(file))
@@ -21,11 +22,12 @@ get '/' do
 end
 
 get '/dns' do
-  "#{header}<pre>#{File.read("/etc/bind/named.conf")}</pre>"
+  erb :'dns/index.html', :layout => :'layout/application.html'
+  #"#{header}<pre>#{File.read("/etc/bind/named.conf")}</pre>"
 end
 
 get '/dhcp' do
-  erb :'dhcp/index.html'
+  erb :'dhcp/index.html', :layout => :'layout/application.html'
   #  "#{header}<pre>#{File.read("/etc/dhcp/dhcpd.conf")}</pre>"
   #header + read_dhcp_reservations
 end

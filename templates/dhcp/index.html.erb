@@ -1,0 +1,16 @@
+<h1>DHCP</h1>
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <th>Host</th>
+    <th>MAC</th>
+    <th>IP</th>
+  </tr>
+<% read_dhcp_reservations.each do |reservation| %>
+  <tr>
+    <td><%= reservation[:host] %></td>
+    <td><%= reservation[:mac] %></td>
+    <td><%= reservation[:ip] %></td>
+  </tr>
+<% end %>
+</table>
