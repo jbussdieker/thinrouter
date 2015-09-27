@@ -1,5 +1,9 @@
 <h2>DHCP</h2>
 
+<% if params[:result] == "false" %>
+<div class="alert alert-danger" role="alert">It's BROKEN!!!!</div>
+<% end %>
+
 <form method="post" action="/dhcp">
   <label>
     Host:
