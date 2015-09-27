@@ -24,15 +24,12 @@ def write_dhcp_reservations(data, file = "dhcp.yaml")
   result
 end
 
-header = "<a href='/dhcp'>DHCP</a> <a href='/dns'>DNS</a>"
-
 get '/' do
-  header
+  erb :'layout/application.html'
 end
 
 get '/dns' do
   erb :'dns/index.html', :layout => :'layout/application.html'
-  #"#{header}<pre>#{File.read("/etc/bind/named.conf")}</pre>"
 end
 
 post '/dhcp' do
@@ -57,6 +54,12 @@ end
 
 get '/dhcp' do
   erb :'dhcp/index.html', :layout => :'layout/application.html'
-  #  "#{header}<pre>#{File.read("/etc/dhcp/dhcpd.conf")}</pre>"
-  #header + read_dhcp_reservations
+end
+
+get '/dhcp/new' do
+  erb :'dhcp/new.html', :layout => :'layout/application.html'
+end
+
+get '/dhcp/leases' do
+  erb :'dhcp/leases.html', :layout => :'layout/application.html'
 end

@@ -1,0 +1,26 @@
+<h2>New DHCP Reservation</h2>
+
+<% if params[:result] == "false" %>
+<div class="alert alert-danger" role="alert">It's BROKEN!!!!</div>
+<% end %>
+
+<div class="col-md-4">
+<form method="post" action="/dhcp">
+  <div class="form-group">
+    <label>Host:</label>
+    <input class="form-control" name="host"></input>
+  </div>
+
+  <div class="form-group">
+    <label>MAC:</label>
+    <input class="form-control" name="mac"></input>
+  </div>
+
+  <div class="form-group">
+    <label>IP:</label>
+    <input class="form-control" name="ip"></input>
+  </div>
+
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+</div>
