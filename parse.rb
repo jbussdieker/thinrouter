@@ -1,23 +1,15 @@
 #!/usr/bin/env ruby
-require 'strscan'
+require 'yaml'
 
-raw = File.read("/etc/dhcp/dhcpd.conf")
-ss = StringScanner.new(raw)
-scope = :global
+hosts = YAML.load(File.read("dhcp.yaml"))
 
-data = {}
+config = hosts.collect do |host|
+<<-END
+host #{host[:host]} {
+  hardware ethernet #{host[:mac]};
+  fixed-address #{host[:ip]};
+}
+END
+end.join("\n")
 
-while true do
-  #puts "Working (#{ss.peek(10).inspect})"
-
-  dnsus = /^ddns\-update\-style\s+(\w+)\s?;/
-  if match = ss.scan(dnsus)
-    match.match(dnsus)
-    data["ddns-update-style"] = $1
-    p data
-  end
-
-  if ss.scan /^\s/
-    puts "Skipping whitespace"
-  end
-end
+puts config
