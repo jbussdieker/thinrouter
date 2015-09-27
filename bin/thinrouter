@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+require 'sinatra'
+
+header = "<a href='/dhcp'>DHCP</a> <a href='/dns'>DNS</a>"
+
+get '/' do
+  header
+end
+
+get '/dns' do
+  "#{header}<pre>#{File.read("/etc/bind/named.conf")}</pre>"
+end
+
+get '/dhcp' do
+  "#{header}<pre>#{File.read("/etc/dhcp/dhcpd.conf")}</pre>"
+end
