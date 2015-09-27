@@ -1,5 +1,18 @@
 #!/usr/bin/env ruby
 require 'sinatra'
+require 'yaml'
+
+set :views, settings.root + '/../templates'
+
+def read_dhcp_reservations(file = "dhcp.yaml")
+  YAML.load(File.read(file))
+end
+
+def write_dhcp_reservations(data, file = "dhcp.yaml")
+  File.open(file, 'w') do |f|
+    f.write(data.to_yaml)
+  end
+end
 
 header = "<a href='/dhcp'>DHCP</a> <a href='/dns'>DNS</a>"
 
@@ -12,5 +25,7 @@ get '/dns' do
 end
 
 get '/dhcp' do
-  "#{header}<pre>#{File.read("/etc/dhcp/dhcpd.conf")}</pre>"
+  erb :'dhcp/index.html'
+  #  "#{header}<pre>#{File.read("/etc/dhcp/dhcpd.conf")}</pre>"
+  #header + read_dhcp_reservations
 end
