@@ -1,23 +1,23 @@
-<h4>New Reservation</h4>
+<h4>Edit Reservation</h4>
 
 <% if params[:result] == "false" %>
 <div class="alert alert-danger" role="alert">It's BROKEN!!!!</div>
 <% end %>
 
-<form method="post" action="/dhcp">
+<form method="post" action="/dhcp/<%= params[:host] %>/edit">
   <div class="form-group">
     <label>Host:</label>
-    <input class="form-control" name="host"></input>
+    <input class="form-control" name="new_host" value="<%= reservation[:host] %>"></input>
   </div>
 
   <div class="form-group">
     <label>MAC:</label>
-    <input class="form-control" name="mac"></input>
+    <input class="form-control" name="mac" value="<%= reservation[:mac] %>"></input>
   </div>
 
   <div class="form-group">
     <label>IP:</label>
-    <input class="form-control" name="ip"></input>
+    <input class="form-control" name="ip" value="<%= reservation[:ip] %>"></input>
   </div>
 
   <button type="submit" class="btn btn-sm btn-default">Submit</button>

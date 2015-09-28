@@ -43,6 +43,26 @@ post '/dhcp' do
   redirect "/dhcp?result=#{result}"
 end
 
+get '/dhcp/:host/edit' do
+  data = read_dhcp_reservations
+  reservation = data.find do |item|
+    item[:host] == params[:host]
+  end
+  erb :'dhcp/edit.html', :layout => :'layout/application.html', :locals => { :reservation => reservation }
+end
+
+post '/dhcp/:host/edit' do
+  data = read_dhcp_reservations
+  reservation = data.find do |item|
+    item[:host] == params[:host]
+  end
+  reservation[:ip] = params[:ip]
+  reservation[:mac] = params[:mac]
+  reservation[:host] = params[:new_host]
+  result = write_dhcp_reservations(data)
+  redirect "/dhcp?result=#{result}"
+end
+
 delete '/dhcp/:host' do
   data = read_dhcp_reservations
   data.delete_if do |item|
