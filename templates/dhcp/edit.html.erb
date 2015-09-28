@@ -4,20 +4,20 @@
 <div class="alert alert-danger" role="alert">It's BROKEN!!!!</div>
 <% end %>
 
-<form method="post" action="/dhcp/<%= params[:host] %>/edit">
+<form method="post" action="/dhcp/<%= params[:id] %>/edit">
   <div class="form-group">
     <label>Host:</label>
-    <input class="form-control" name="new_host" value="<%= reservation[:host] %>"></input>
+    <input class="form-control" name="new_host" value="<%= res.host %>"></input>
   </div>
 
   <div class="form-group">
     <label>MAC:</label>
-    <input class="form-control" name="mac" value="<%= reservation[:mac] %>"></input>
+    <input class="form-control" name="mac" value="<%= res.mac %>"></input>
   </div>
 
   <div class="form-group">
     <label>IP:</label>
-    <input class="form-control" name="ip" value="<%= reservation[:ip] %>"></input>
+    <input class="form-control" name="ip" value="<%= res.ip %>"></input>
   </div>
 
   <button type="submit" class="btn btn-sm btn-default">Submit</button>

@@ -14,14 +14,14 @@
     <th>IP</th>
     <th></th>
   </tr>
-<% read_dhcp_reservations.each do |reservation| %>
+<% DHCP.all.each do |res| %>
   <tr>
-    <td><%= reservation[:host] %></td>
-    <td class=""><%= reservation[:mac] %></td>
-    <td><%= reservation[:ip] %></td>
+    <td><%= res %></td>
+    <td class=""><%= res.mac %></td>
+    <td><%= res.ip %></td>
     <td class="text-right">
-      <a class="btn btn-default btn-xs" href="/dhcp/<%= reservation[:host] %>/edit">Edit</a>
-      <a class="btn btn-danger btn-xs" data-confirm="Are you sure?" data-method="delete" href="/dhcp/<%= reservation[:host] %>">Delete</a>
+      <a class="btn btn-default btn-xs" href="/dhcp/<%= res %>/edit">Edit</a>
+      <a class="btn btn-danger btn-xs" data-confirm="Are you sure?" data-method="delete" href="/dhcp/<%= res %>">Delete</a>
     </td>
   </tr>
 <% end %>

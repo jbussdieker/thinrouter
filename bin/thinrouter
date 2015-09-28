@@ -1,31 +1,21 @@
 #!/usr/bin/env ruby
+$: << File.expand_path("./../../lib", __FILE__)
+require 'thinrouter/dhcp'
 require 'sinatra'
 require 'yaml'
+
+DHCP = Thinrouter::Dhcp
 
 set :views, settings.root + '/../templates'
 set :public_folder, settings.root + '/../public'
 
-def read_dhcp_reservations(file = "dhcp.yaml")
-  YAML.load(File.read(file))
-end
-
-def write_dhcp_reservations(data, file = "dhcp.yaml")
-  bak = read_dhcp_reservations
-  File.open(file, 'w') do |f|
-    f.write(data.to_yaml)
-  end
+def commit_dhcp
   puts `sudo ./update_dhcp`
   result = ($?.to_i == 0)
-  if result == false
-    File.open(file, 'w') do |f|
-      f.write(bak.to_yaml)
-    end
-  end
-  result
 end
 
 get '/' do
-  erb :'layout/application.html'
+  erb :'home/index.html', :'layout/application.html'
 end
 
 get '/dns' do
@@ -33,42 +23,34 @@ get '/dns' do
 end
 
 post '/dhcp' do
-  data = read_dhcp_reservations
-  data << {
+  res = DHCP.create({
     :host => params[:host],
     :mac => params[:mac],
     :ip => params[:ip],
-  }
-  result = write_dhcp_reservations(data)
+  })
+  result = commit_dhcp
   redirect "/dhcp?result=#{result}"
 end
 
-get '/dhcp/:host/edit' do
-  data = read_dhcp_reservations
-  reservation = data.find do |item|
-    item[:host] == params[:host]
-  end
-  erb :'dhcp/edit.html', :layout => :'layout/application.html', :locals => { :reservation => reservation }
+get '/dhcp/:id/edit' do
+  res = DHCP.find(params[:id])
+  erb :'dhcp/edit.html', :layout => :'layout/application.html', :locals => { :res => res }
 end
 
-post '/dhcp/:host/edit' do
-  data = read_dhcp_reservations
-  reservation = data.find do |item|
-    item[:host] == params[:host]
-  end
-  reservation[:ip] = params[:ip]
-  reservation[:mac] = params[:mac]
-  reservation[:host] = params[:new_host]
-  result = write_dhcp_reservations(data)
+post '/dhcp/:id/edit' do
+  res = DHCP.find(params[:id])
+  res.ip = params[:ip]
+  res.mac = params[:mac]
+  res.host = params[:new_host]
+  res.save
+  result = commit_dhcp
   redirect "/dhcp?result=#{result}"
 end
 
-delete '/dhcp/:host' do
-  data = read_dhcp_reservations
-  data.delete_if do |item|
-    item[:host] == params[:host]
-  end
-  result = write_dhcp_reservations(data)
+delete '/dhcp/:id' do
+  res = DHCP.find(params[:id])
+  res.delete
+  result = commit_dhcp
   redirect "/dhcp?result=#{result}"
 end
 
