@@ -7,7 +7,7 @@
 <a class="btn btn-sm btn-success" href="/dhcp/new">New Reservation</a>
 <br><br>
 
-<table class="table table-condensed table-bordered table-striped">
+<table class="table table-condensed table-striped">
   <tr>
     <th>Host</th>
     <th>MAC</th>
@@ -17,9 +17,12 @@
 <% read_dhcp_reservations.each do |reservation| %>
   <tr>
     <td><%= reservation[:host] %></td>
-    <td><%= reservation[:mac] %></td>
+    <td class=""><%= reservation[:mac] %></td>
     <td><%= reservation[:ip] %></td>
-    <td><a data-method="delete" href="/dhcp/<%= reservation[:host] %>">Delete</a></td>
+    <td class="text-right">
+      <a class="btn btn-default btn-xs" href="/dhcp/<%= reservation[:host] %>/edit">Edit</a>
+      <a class="btn btn-danger btn-xs" data-confirm="Are you sure?" data-method="delete" href="/dhcp/<%= reservation[:host] %>">Delete</a>
+    </td>
   </tr>
 <% end %>
 </table>
