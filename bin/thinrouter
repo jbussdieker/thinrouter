@@ -1,16 +1,30 @@
 #!/usr/bin/env ruby
 $: << File.expand_path("./../../lib", __FILE__)
+require 'bundler/setup'
 require 'thinrouter/dhcp'
 require 'sinatra'
 require 'yaml'
 
+Thinrouter::Dhcp.filename = File.expand_path("./../../dhcp.yaml", __FILE__)
 DHCP = Thinrouter::Dhcp
 
 set :views, settings.root + '/../templates'
 set :public_folder, settings.root + '/../public'
 
 def commit_dhcp
-  puts `sudo ./update_dhcp`
+  puts `cd #{File.expand_path("./../..", __FILE__)}; sudo ./update_dhcp`
+  result = ($?.to_i == 0)
+end
+
+def dhcpstatus
+  puts `sudo service isc-dhcp-server status`
+  puts $?
+  result = ($?.to_i == 0)
+end
+
+def dnsstatus
+  puts `sudo service bind9 status`
+  puts $?
   result = ($?.to_i == 0)
 end
 
@@ -20,6 +34,26 @@ end
 
 get '/dns' do
   erb :'dns/index.html', :layout => :'layout/application.html'
+end
+
+get '/dns/start' do
+  `sudo service bind9 start`
+  redirect "/"
+end
+
+get '/dns/stop' do
+  `sudo service bind9 stop`
+  redirect "/"
+end
+
+get '/dhcp/start' do
+  `sudo service isc-dhcp-server start`
+  redirect "/"
+end
+
+get '/dhcp/stop' do
+  `sudo service isc-dhcp-server stop`
+  redirect "/"
 end
 
 post '/dhcp' do

@@ -1,0 +1,17 @@
+<h5>DHCP</h5>
+<% if dhcpstatus %>
+  <a class="btn btn-default btn-sm" href="/dhcp/stop">Stop</a>
+  Status: <span class="label label-success">Running</span>
+<% else %>
+  <a class="btn btn-default btn-sm" href="/dhcp/start">Start</a>
+  Status: <span class="label label-default">Stopped</span>
+<% end %>
+
+<h5>DNS</h5>
+<% if dnsstatus %>
+  <a class="btn btn-default btn-sm" href="/dns/stop">Stop</a>
+  Status: <span class="label label-success">Running</span>
+<% else %>
+  <a class="btn btn-default btn-sm" href="/dns/start">Start</a>
+  Status: <span class="label label-default">Stopped</span>
+<% end %>
