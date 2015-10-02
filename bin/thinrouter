@@ -15,7 +15,7 @@ def commit_dhcp
 end
 
 get '/' do
-  erb :'home/index.html', :'layout/application.html'
+  erb :'home/index.html', :layout => :'layout/application.html'
 end
 
 get '/dns' do
