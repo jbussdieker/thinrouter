@@ -1,2 +1,4 @@
 dhcp.yaml
 nohup.out
+modules/
+.tmp/
