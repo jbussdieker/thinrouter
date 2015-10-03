@@ -17,15 +17,27 @@ def commit_dhcp
 end
 
 def dhcpstatus
-  puts `sudo service isc-dhcp-server status`
-  puts $?
-  result = ($?.to_i == 0)
+  result = `sudo service isc-dhcp-server status`
+
+  if result =~ /isc-dhcp-server start\/running, process (\d+)/
+    return :running
+  elsif result =~ /isc-dhcp-server stop\/waiting/
+    return :stopped
+  else
+    return :unknown
+  end
 end
 
 def dnsstatus
   puts `sudo service bind9 status`
   puts $?
   result = ($?.to_i == 0)
+end
+
+def dhcplog(filename = '/var/log/dhcpd.log')
+  if File.exists?(filename)
+    File.read(filename)
+  end
 end
 
 get '/' do

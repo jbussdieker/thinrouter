@@ -1,10 +1,13 @@
 <h5>DHCP</h5>
-<% if dhcpstatus %>
+<% if dhcpstatus == :running %>
   <a class="btn btn-default btn-sm" href="/dhcp/stop">Stop</a>
   Status: <span class="label label-success">Running</span>
-<% else %>
+<% elsif dhcpstatus == :stopped %>
   <a class="btn btn-default btn-sm" href="/dhcp/start">Start</a>
   Status: <span class="label label-default">Stopped</span>
+<% else %>
+  <a class="btn btn-default btn-sm" href="/dhcp/start">Start</a>
+  Status: <span class="label label-warning">Unknown</span>
 <% end %>
 
 <h5>DNS</h5>
@@ -19,4 +22,4 @@
 <br>
 <br>
 
-<pre><%= (File.read("/var/log/dhcpd.log").split("\n")[-20..-1] || []).join("\n") %></pre>
+<pre><%= dhcplog %></pre>
