@@ -15,3 +15,8 @@
   <a class="btn btn-default btn-sm" href="/dns/start">Start</a>
   Status: <span class="label label-default">Stopped</span>
 <% end %>
+
+<br>
+<br>
+
+<pre><%= (File.read("/var/log/dhcpd.log").split("\n")[-20..-1] || []).join("\n") %></pre>
