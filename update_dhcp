@@ -1,2 +1,2 @@
-./parse.rb > /etc/dhcp/dhcpd.hosts.conf
+./generate_dhcp.rb > /etc/dhcp/dhcpd.hosts.conf
 service isc-dhcp-server restart
