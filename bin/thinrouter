@@ -27,10 +27,17 @@ end
 def dhcpstatus
   result = `sudo service isc-dhcp-server status`
 
-  if result =~ /isc-dhcp-server start\/running, process (\d+)/
+  # Raspian
+  if result =~ /Status of ISC DHCP server: dhcpd is running\./
+    return :running
+  elsif result =~ /Status of ISC DHCP server: dhcpd is not running\./
+    return :stopped
+  # Ubuntu Trusty
+  elsif result =~ /isc-dhcp-server start\/running, process (\d+)/
     return :running
   elsif result =~ /isc-dhcp-server stop\/waiting/
     return :stopped
+  # UNKNOWN
   else
     return :unknown
   end
@@ -39,7 +46,7 @@ end
 def dnsstatus
   puts `sudo service bind9 status`
   puts $?
-  result = ($?.to_i == 0)
+  ($?.to_i == 0) ? :running : :stopped
 end
 
 def dhcplog(filename = '/var/log/dhcpd.log')
@@ -124,6 +131,10 @@ end
 
 get '/dhcp' do
   erb :'dhcp/index.html', :layout => :'layout/application.html'
+end
+
+get '/dhcp/log' do
+  erb :'dhcp/log.html', :layout => :'layout/application.html'
 end
 
 get '/dhcp/new' do

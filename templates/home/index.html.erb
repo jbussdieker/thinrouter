@@ -1,25 +1,50 @@
-<h5>DHCP</h5>
-<% if dhcpstatus == :running %>
-  <a class="btn btn-default btn-sm" href="/dhcp/stop">Stop</a>
-  Status: <span class="label label-success">Running</span>
-<% elsif dhcpstatus == :stopped %>
-  <a class="btn btn-default btn-sm" href="/dhcp/start">Start</a>
-  Status: <span class="label label-default">Stopped</span>
-<% else %>
-  <a class="btn btn-default btn-sm" href="/dhcp/start">Start</a>
-  Status: <span class="label label-warning">Unknown</span>
-<% end %>
+<h4>Overview</h4>
 
-<h5>DNS</h5>
-<% if dnsstatus %>
-  <a class="btn btn-default btn-sm" href="/dns/stop">Stop</a>
-  Status: <span class="label label-success">Running</span>
-<% else %>
-  <a class="btn btn-default btn-sm" href="/dns/start">Start</a>
-  Status: <span class="label label-default">Stopped</span>
-<% end %>
-
-<br>
-<br>
-
-<pre><%= dhcplog %></pre>
+<table class="table">
+  <tr>
+    <th>Service</th>
+    <th>Status</th>
+    <th></th>
+  <tr>
+    <td>DHCP</td>
+    <td>
+      <% if dhcpstatus == :running %>
+        <span class="label label-success">Running</span>
+      <% elsif dhcpstatus == :stopped %>
+        <span class="label label-danger">Stopped</span>
+      <% else %>
+        <span class="label label-warning">Unknown</span>
+      <% end %>
+    </td>
+    <td>
+      <% if dhcpstatus == :running %>
+        <a class="btn btn-danger btn-sm" href="/dhcp/stop">Stop</a>
+      <% elsif dhcpstatus == :stopped %>
+        <a class="btn btn-success btn-sm" href="/dhcp/start">Start</a>
+      <% else %>
+        <a class="btn btn-warning btn-sm" href="/dhcp/start">Start</a>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <td>DNS</td>
+    <td>
+      <% if dnsstatus == :running %>
+        <span class="label label-success">Running</span>
+      <% elsif dnsstatus == :stopped %>
+        <span class="label label-danger">Stopped</span>
+      <% else %>
+        <span class="label label-warning">Unknown</span>
+      <% end %>
+    </td>
+    <td>
+      <% if dnsstatus == :running %>
+        <a class="btn btn-danger btn-sm" href="/dns/stop">Stop</a>
+      <% elsif dnsstatus == :stopped %>
+        <a class="btn btn-success btn-sm" href="/dns/start">Start</a>
+      <% else %>
+        <a class="btn btn-warning btn-sm" href="/dns/start">Start</a>
+      <% end %>
+    </td>
+  </tr>
+</table>

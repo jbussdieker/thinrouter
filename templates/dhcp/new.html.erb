@@ -1,8 +1,8 @@
-<h4>New Reservation</h4>
+<h4>New DHCP Reservation</h4>
 
-<% if params[:result] == "false" %>
-<div class="alert alert-danger" role="alert">Error Occured</div>
-<% end %>
+<a class="btn btn-sm btn-default" href="/dhcp">Back</a>
+<br>
+<br>
 
 <form method="post" action="/dhcp">
   <div class="form-group">
@@ -21,5 +21,4 @@
   </div>
 
   <button type="submit" class="btn btn-sm btn-success">Create</button>
-  <a class="btn btn-sm btn-default" href="/dhcp">Cancel</a>
 </form>
