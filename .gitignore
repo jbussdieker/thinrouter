@@ -1,4 +1,5 @@
 dhcp.yaml
+dns.yaml
 nohup.out
 modules/
 .tmp/
