@@ -77,6 +77,17 @@ post '/dns' do
   redirect "/dns?result=#{result}"
 end
 
+delete '/dns/:type/:host' do
+  DNS.all.each do |rec|
+    if rec.type == params[:type] &&
+       rec.host == params[:host]
+      rec.delete
+    end
+  end
+  result = commit_dns
+  redirect "/dns?result=#{result}"
+end
+
 get '/dns/start' do
   `sudo service bind9 start`
   redirect "/"
