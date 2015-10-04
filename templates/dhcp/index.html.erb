@@ -1,10 +1,11 @@
 <h4>DHCP</h4>
 
 <% if params[:result] == "false" %>
-<div class="alert alert-danger" role="alert">It's BROKEN!!!!</div>
+<div class="alert alert-danger" role="alert">Error Occured</div>
 <% end %>
 
 <a class="btn btn-sm btn-success" href="/dhcp/new">New Reservation</a>
+<a class="btn btn-sm btn-default" href="/dhcp/leases">Leases</a>
 <br><br>
 
 <table class="table table-condensed table-striped">
