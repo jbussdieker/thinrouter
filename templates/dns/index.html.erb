@@ -1,0 +1,28 @@
+<h4>DNS</h4>
+
+<% if params[:result] == "false" %>
+<div class="alert alert-danger" role="alert">Error Occured</div>
+<% end %>
+
+<a class="btn btn-sm btn-success" href="/dns/new">New Record</a>
+<br><br>
+
+<table class="table table-condensed table-striped">
+  <tr>
+    <th>Host</th>
+    <th>Type</th>
+    <th>Value</th>
+    <th></th>
+  </tr>
+<% DNS.all.each do |res| %>
+  <tr>
+    <td><%= res %></td>
+    <td class=""><%= res.type.upcase %></td>
+    <td><%= res.value %></td>
+    <td class="text-right">
+      <a class="btn btn-default btn-xs" href="/dns/<%= res.type %>/<%= res %>/edit">Edit</a>
+      <a class="btn btn-danger btn-xs" data-confirm="Are you sure?" data-method="delete" href="/dhcp/<%= res.type %>/<%= res %>">Delete</a>
+    </td>
+  </tr>
+<% end %>
+</table>

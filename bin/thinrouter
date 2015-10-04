@@ -7,13 +7,20 @@ require 'sinatra'
 require 'yaml'
 
 Thinrouter::Dhcp.filename = File.expand_path("./../../dhcp.yaml", __FILE__)
+Thinrouter::Dns.filename = File.expand_path("./../../dns.yaml", __FILE__)
 DHCP = Thinrouter::Dhcp
+DNS = Thinrouter::Dns
 
 set :views, settings.root + '/../templates'
 set :public_folder, settings.root + '/../public'
 
 def commit_dhcp
   puts `cd #{File.expand_path("./../..", __FILE__)}; sudo ./update_dhcp`
+  result = ($?.to_i == 0)
+end
+
+def commit_dns
+  puts `cd #{File.expand_path("./../..", __FILE__)}; sudo ./update_dns`
   result = ($?.to_i == 0)
 end
 
@@ -47,6 +54,20 @@ end
 
 get '/dns' do
   erb :'dns/index.html', :layout => :'layout/application.html'
+end
+
+get '/dns/new' do
+  erb :'dns/new.html', :layout => :'layout/application.html'
+end
+
+post '/dns' do
+  res = DNS.create({
+    :host => params[:host],
+    :type => params[:type],
+    :value => params[:value],
+  })
+  result = commit_dns
+  redirect "/dns?result=#{result}"
 end
 
 get '/dns/start' do
