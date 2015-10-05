@@ -1,4 +1,8 @@
-<h4>Edit Reservation</h4>
+<h4>Edit DHCP Reservation</h4>
+
+<a class="btn btn-sm btn-default" href="/dhcp">Back</a>
+<br>
+<br>
 
 <% if params[:result] == "false" %>
 <div class="alert alert-danger" role="alert">It's BROKEN!!!!</div>
@@ -20,6 +24,5 @@
     <input class="form-control" name="ip" value="<%= res.ip %>"></input>
   </div>
 
-  <button type="submit" class="btn btn-sm btn-default">Submit</button>
-  <a class="btn btn-sm btn-default" href="/dhcp">Cancel</a>
+  <button type="submit" class="btn btn-sm btn-success">Update</button>
 </form>
