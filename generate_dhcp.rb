@@ -1,13 +1,12 @@
 #!/usr/bin/env ruby
-require 'yaml'
+$: << File.expand_path("./../lib", __FILE__)
+require 'thinrouter'
 
-hosts = YAML.load(File.read("config/dhcp.yaml"))
-
-config = hosts.collect do |host|
+config = ThinRouter::DHCP.all.collect do |res|
 <<-END
-host #{host[:host]} {
-  hardware ethernet #{host[:mac]};
-  fixed-address #{host[:ip]};
+host #{res.host} {
+  hardware ethernet #{res.mac};
+  fixed-address #{res.ip};
 }
 END
 end.join("\n")
