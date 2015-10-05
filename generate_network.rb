@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'yaml'
 
-config = YAML.load(File.read("config.yaml"))
+config = YAML.load(File.read("config/config.yaml"))
 
 config_raw = <<-END
 auto lo

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'yaml'
 
-hosts = YAML.load(File.read("dhcp.yaml"))
+hosts = YAML.load(File.read("config/dhcp.yaml"))
 
 config = hosts.collect do |host|
 <<-END

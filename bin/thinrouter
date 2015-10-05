@@ -6,8 +6,9 @@ require 'thinrouter/dns'
 require 'sinatra'
 require 'yaml'
 
-Thinrouter::Dhcp.filename = File.expand_path("./../../dhcp.yaml", __FILE__)
-Thinrouter::Dns.filename = File.expand_path("./../../dns.yaml", __FILE__)
+PROJECT_ROOT = File.expand_path("./../../", __FILE__)
+Thinrouter::Dhcp.filename = File.join(PROJECT_ROOT, "config/dhcp.yaml")
+Thinrouter::Dns.filename = File.join(PROJECT_ROOT, "config/dns.yaml")
 DHCP = Thinrouter::Dhcp
 DNS = Thinrouter::Dns
 
@@ -15,12 +16,12 @@ set :views, settings.root + '/../templates'
 set :public_folder, settings.root + '/../public'
 
 def commit_dhcp
-  puts `cd #{File.expand_path("./../..", __FILE__)}; sudo ./update_dhcp`
+  puts `cd #{PROJECT_ROOT}; sudo ./update_dhcp`
   result = ($?.to_i == 0)
 end
 
 def commit_dns
-  puts `cd #{File.expand_path("./../..", __FILE__)}; sudo ./update_dns`
+  puts `cd #{PROJECT_ROOT}; sudo ./update_dns`
   result = ($?.to_i == 0)
 end
 

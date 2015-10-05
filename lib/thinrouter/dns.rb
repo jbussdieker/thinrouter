@@ -22,7 +22,7 @@ module Thinrouter
   class Dns
     extend YamlStore
 
-    self.filename = "dns.yaml"
+    self.filename = "config/dns.yaml"
 
     attr_accessor :host, :type, :value
 

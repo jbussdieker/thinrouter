@@ -22,7 +22,7 @@ module Thinrouter
   class Dhcp
     extend YamlStore
 
-    self.filename = "dhcp.yaml"
+    self.filename = "config/dhcp.yaml"
 
     attr_accessor :host, :mac, :ip
 
