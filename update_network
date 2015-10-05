@@ -1,2 +1,0 @@
-./generate_network.rb > /etc/network/interfaces
-/etc/init.d/networking restart

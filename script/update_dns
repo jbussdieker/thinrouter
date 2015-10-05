@@ -1,0 +1,2 @@
+./script/generate_dns.rb > /etc/bind/db.jbussdieker.com
+service bind9 restart
