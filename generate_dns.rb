@@ -1,10 +1,9 @@
 #!/usr/bin/env ruby
-require 'yaml'
+$: << File.expand_path("./../lib", __FILE__)
+require 'thinrouter'
 
-records = YAML.load(File.read("config/dns.yaml"))
-
-config = records.collect do |record|
-  "#{record[:host]} IN #{record[:type].upcase} #{record[:value]}"
+config = ThinRouter::DNS.all.collect do |rec|
+  "#{rec.host} IN #{rec.type.upcase} #{rec.value}"
 end.join("\n")
 
 puts "$TTL 10800\n" + config
