@@ -5,22 +5,21 @@ require 'thinrouter'
 require 'sinatra'
 require 'yaml'
 
-PROJECT_ROOT = ThinRouter::ROOT
-ThinRouter::DHCP.filename = File.join(PROJECT_ROOT, "config/dhcp.yaml")
-ThinRouter::DNS.filename = File.join(PROJECT_ROOT, "config/dns.yaml")
-DHCP = ThinRouter::DHCP
-DNS = ThinRouter::DNS
+include ThinRouter
 
-set :views, settings.root + '/../templates'
-set :public_folder, settings.root + '/../public'
+DHCP.filename = File.join(ROOT, "config/dhcp.yaml")
+DNS.filename = File.join(ROOT, "config/dns.yaml")
+
+set :views, File.join(ROOT, 'templates')
+set :public_folder, File.join(ROOT, 'public')
 
 def commit_dhcp
-  puts `cd #{PROJECT_ROOT}; sudo ./script/update_dhcp`
+  puts `cd #{ROOT}; sudo ./script/update_dhcp`
   result = ($?.to_i == 0)
 end
 
 def commit_dns
-  puts `cd #{PROJECT_ROOT}; sudo ./script/update_dns`
+  puts `cd #{ROOT}; sudo ./script/update_dns`
   result = ($?.to_i == 0)
 end
 
@@ -59,14 +58,21 @@ get '/' do
   erb :'home/index.html', :layout => :'layout/application.html'
 end
 
+#################################################################
+# DNS
+#################################################################
+
+# Index
 get '/dns' do
   erb :'dns/index.html', :layout => :'layout/application.html'
 end
 
+# New
 get '/dns/new' do
   erb :'dns/new.html', :layout => :'layout/application.html'
 end
 
+# Create
 post '/dns' do
   res = DNS.create({
     :host => params[:host],
@@ -77,6 +83,7 @@ post '/dns' do
   redirect "/dns?result=#{result}"
 end
 
+# Delete
 delete '/dns/:type/:host' do
   DNS.all.each do |rec|
     if rec.type == params[:type] &&
@@ -98,16 +105,21 @@ get '/dns/stop' do
   redirect "/"
 end
 
-get '/dhcp/start' do
-  `sudo service isc-dhcp-server start`
-  redirect "/"
+#################################################################
+# DHCP
+#################################################################
+
+# Index
+get '/dhcp' do
+  erb :'dhcp/index.html', :layout => :'layout/application.html'
 end
 
-get '/dhcp/stop' do
-  `sudo service isc-dhcp-server stop`
-  redirect "/"
+# New
+get '/dhcp/new' do
+  erb :'dhcp/new.html', :layout => :'layout/application.html'
 end
 
+# Create
 post '/dhcp' do
   res = DHCP.create({
     :host => params[:host],
@@ -118,13 +130,15 @@ post '/dhcp' do
   redirect "/dhcp?result=#{result}"
 end
 
-get '/dhcp/:id/edit' do
-  res = DHCP.find(params[:id])
+# Edit
+get '/dhcp/:id/edit' do |id|
+  res = DHCP.find(id)
   erb :'dhcp/edit.html', :layout => :'layout/application.html', :locals => { :res => res }
 end
 
-post '/dhcp/:id/edit' do
-  res = DHCP.find(params[:id])
+# Update
+post '/dhcp/:id/edit' do |id|
+  res = DHCP.find(id)
   res.ip = params[:ip]
   res.mac = params[:mac]
   res.host = params[:new_host]
@@ -133,23 +147,26 @@ post '/dhcp/:id/edit' do
   redirect "/dhcp?result=#{result}"
 end
 
-delete '/dhcp/:id' do
-  res = DHCP.find(params[:id])
+# Delete
+delete '/dhcp/:id' do |id|
+  res = DHCP.find(id)
   res.delete
   result = commit_dhcp
   redirect "/dhcp?result=#{result}"
 end
 
-get '/dhcp' do
-  erb :'dhcp/index.html', :layout => :'layout/application.html'
+get '/dhcp/start' do
+  `sudo service isc-dhcp-server start`
+  redirect "/"
+end
+
+get '/dhcp/stop' do
+  `sudo service isc-dhcp-server stop`
+  redirect "/"
 end
 
 get '/dhcp/log' do
   erb :'dhcp/log.html', :layout => :'layout/application.html'
-end
-
-get '/dhcp/new' do
-  erb :'dhcp/new.html', :layout => :'layout/application.html'
 end
 
 get '/dhcp/leases' do
