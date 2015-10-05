@@ -1,0 +1,28 @@
+<h4>Edit DNS Record</h4>
+
+<a class="btn btn-sm btn-default" href="/dns">Back</a>
+<br>
+<br>
+
+<% if params[:result] == "false" %>
+<div class="alert alert-danger" role="alert">Error Occured</div>
+<% end %>
+
+<form method="post" action="/dns/<%= rec.type %>/<%= rec.host %>/<%= rec.value %>">
+  <div class="form-group">
+    <label>Host:</label>
+    <input class="form-control" name="new_host" value="<%= rec.host %>"></input>
+  </div>
+
+  <div class="form-group">
+    <label>Type:</label>
+    <input class="form-control" name="new_type" value="<%= rec.type %>"></input>
+  </div>
+
+  <div class="form-group">
+    <label>Value:</label>
+    <input class="form-control" name="new_value" value="<%= rec.value %>"></input>
+  </div>
+
+  <button type="submit" class="btn btn-sm btn-success">Update</button>
+</form>

@@ -83,11 +83,32 @@ post '/dns' do
   redirect "/dns?result=#{result}"
 end
 
+# Edit
+get '/dns/:type/:host/:value/edit' do |type, host, value|
+  rec = DNS.all.find do |rec|
+    rec.type == type && rec.host == host && rec.value == value
+  end
+  erb :'dns/edit.html', :layout => :'layout/application.html', :locals => { :rec => rec }
+end
+
+# Update
+post '/dns/:type/:host/:value' do |type, host, value|
+  rec = DNS.all.find do |rec|
+    rec.type == type && rec.host == host && rec.value == value
+  end
+
+  rec.host = params[:new_host]
+  rec.type = params[:new_type]
+  rec.value = params[:new_value]
+  rec.save
+  result = commit_dns
+  redirect "/dns?result=#{result}"
+end
+
 # Delete
-delete '/dns/:type/:host' do
+delete '/dns/:type/:host/:value' do |type, host, value|
   DNS.all.each do |rec|
-    if rec.type == params[:type] &&
-       rec.host == params[:host]
+    if rec.type == type && rec.host == host && rec.value == value
       rec.delete
     end
   end
