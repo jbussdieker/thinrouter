@@ -1,25 +1,7 @@
-require 'yaml'
+require 'thinrouter/yaml_store'
 
-module YamlStore
-  attr_accessor :data, :filename
-
-  def data
-    @data || load_yaml
-  end
-
-  def save_yaml
-    File.open(filename, 'w') do |f|
-      f.puts(self.data.to_yaml)
-    end
-  end
-
-  def load_yaml
-    @data = YAML.load(File.read(filename))
-  end
-end
-
-module Thinrouter
-  class Dhcp
+module ThinRouter
+  class DHCP
     extend YamlStore
 
     self.filename = "config/dhcp.yaml"
@@ -68,14 +50,14 @@ module Thinrouter
       @args[:host] = @host
       @args[:mac] = @mac
       @args[:ip] = @ip
-      Thinrouter::Dhcp.save_yaml
+      ThinRouter::DHCP.save_yaml
     end
 
     def delete
-      Thinrouter::Dhcp.data.delete_if do |d|
+      ThinRouter::DHCP.data.delete_if do |d|
         d[:host] == @args[:host]
       end
-      Thinrouter::Dhcp.save_yaml
+      ThinRouter::DHCP.save_yaml
     end
 
     def self.find(id)
@@ -88,7 +70,7 @@ module Thinrouter
       newrec = new(args)
       # Maybe check if valid
       data << args
-      Thinrouter::Dhcp.save_yaml
+      ThinRouter::DHCP.save_yaml
     end
 
     def self.all

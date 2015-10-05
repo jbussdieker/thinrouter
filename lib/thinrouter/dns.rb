@@ -1,25 +1,7 @@
-require 'yaml'
+require 'thinrouter/yaml_store'
 
-module YamlStore
-  attr_accessor :data, :filename
-
-  def data
-    @data || load_yaml
-  end
-
-  def save_yaml
-    File.open(filename, 'w') do |f|
-      f.puts(self.data.to_yaml)
-    end
-  end
-
-  def load_yaml
-    @data = YAML.load(File.read(filename))
-  end
-end
-
-module Thinrouter
-  class Dns
+module ThinRouter
+  class DNS
     extend YamlStore
 
     self.filename = "config/dns.yaml"
@@ -68,14 +50,14 @@ module Thinrouter
       @args[:host] = @host
       @args[:type] = @type
       @args[:value] = @value
-      Thinrouter::Dns.save_yaml
+      ThinRouter::DNS.save_yaml
     end
 
     def delete
-      Thinrouter::Dns.data.delete_if do |d|
+      ThinRouter::DNS.data.delete_if do |d|
         d[:host] == @args[:host]
       end
-      Thinrouter::Dns.save_yaml
+      ThinRouter::DNS.save_yaml
     end
 
     def self.find(id)
@@ -88,7 +70,7 @@ module Thinrouter
       newrec = new(args)
       # Maybe check if valid
       data << args
-      Thinrouter::Dns.save_yaml
+      ThinRouter::DNS.save_yaml
     end
 
     def self.all

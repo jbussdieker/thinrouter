@@ -1,16 +1,15 @@
 #!/usr/bin/env ruby
 $: << File.expand_path("./../../lib", __FILE__)
 require 'bundler/setup'
-require 'thinrouter/dhcp'
-require 'thinrouter/dns'
+require 'thinrouter'
 require 'sinatra'
 require 'yaml'
 
-PROJECT_ROOT = File.expand_path("./../../", __FILE__)
-Thinrouter::Dhcp.filename = File.join(PROJECT_ROOT, "config/dhcp.yaml")
-Thinrouter::Dns.filename = File.join(PROJECT_ROOT, "config/dns.yaml")
-DHCP = Thinrouter::Dhcp
-DNS = Thinrouter::Dns
+PROJECT_ROOT = ThinRouter::ROOT
+ThinRouter::DHCP.filename = File.join(PROJECT_ROOT, "config/dhcp.yaml")
+ThinRouter::DNS.filename = File.join(PROJECT_ROOT, "config/dns.yaml")
+DHCP = ThinRouter::DHCP
+DNS = ThinRouter::DNS
 
 set :views, settings.root + '/../templates'
 set :public_folder, settings.root + '/../public'
