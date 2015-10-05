@@ -1,0 +1,10 @@
+---
+- :host: ! '@'
+  :type: soa
+  :value: example.com. root.example.com. (1 86400 3600 604800 3600)
+- :host: ! '@'
+  :type: ns
+  :value: ns1.jbussdieker.com.
+- :host: www
+  :type: a
+  :value: 192.168.0.10

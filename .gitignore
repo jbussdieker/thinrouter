@@ -1,4 +1,4 @@
-config/
+config/*.yaml
 nohup.out
 modules/
 .tmp/
